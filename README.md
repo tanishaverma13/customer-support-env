@@ -13,11 +13,11 @@ pinned: false
 
 CustomerSupportEnv simulates real-world customer support interactions where an AI agent must classify issues, respond appropriately, and retain customers across multi-turn conversations.
 
-The environment models dynamic customer behavior including emotional escalation, trust variation, and business impact — enabling RL agents to improve through feedback over time. Unlike static environments, customer mood and patience evolve based on agent response quality, creating a genuinely challenging training ground.
+The environment models dynamic customer behavior including emotional escalation, trust variation, and business impact — enabling RL agents to improve through feedback over time. Customer mood and patience dynamically evolve based on agent responses, creating a realistic and adaptive interaction environment.
 
 ## What Makes This Unique
 
-- **Dynamic customer mood** — emotion changes every turn based on agent response quality. Bad response → angrier customer → harder next turn.
+- **Dynamic customer mood** — emotion changes every turn based on agent response quality. Poor responses increase customer anger, making subsequent turns harder to recover.
 - **Trust score** — builds with empathetic responses (max +0.08 bonus), drops with cold/formal tone
 - **Repeated action penalty** — -0.15 if agent spams same action type, preventing lazy behavior
 - **Failure states** — customer leaves if patience hits zero, episode ends with -0.30 penalty
@@ -97,7 +97,7 @@ The environment returns the following at each step:
 
 ## Deployment
 
-This environment is deployed as a Hugging Face Space using Docker and complies with OpenEnv specifications. The service runs on port 8000 and can be validated using `openenv validate`.
+This environment is deployed as a Hugging Face Space using Docker and complies with OpenEnv specifications. The service runs on port 7860 (Hugging Face Spaces default) and can be validated using `openenv validate`.
 
 ```bash
 docker build -t customer-support-env .
@@ -142,3 +142,5 @@ customer_support_env/
 ## Summary
 
 CustomerSupportEnv provides a realistic, multi-turn reinforcement learning environment where agent actions directly influence customer emotion, trust, and business outcomes, enabling training of more effective and human-aware support agents.
+
+This environment is designed to evaluate and train agents in handling complex, real-world customer interactions beyond simple classification tasks.
