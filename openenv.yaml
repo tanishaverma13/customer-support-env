@@ -1,0 +1,31 @@
+spec_version: 1
+name: customer-support-env
+type: environment
+description: >
+  Real-world OpenEnv RL environment for training customer support AI agents.
+  Features explicit customer state tracking (emotion, patience, tier),
+  structured action space with action_type, dynamic mood transitions,
+  failure state detection, and tier-weighted retention rewards.
+author: solo-participant
+tags: [customer-support, nlp, multi-turn, retention, real-world]
+runtime: docker
+app:
+  port: 8000
+  path: app.py
+tasks:
+  - name: refund_status_inquiry
+    difficulty: easy
+  - name: damaged_product_complaint
+    difficulty: medium
+  - name: vip_escalation_retention
+    difficulty: hard
+reward:
+  min: 0.0
+  max: 1.0
+  type: continuous
+  breakdown:
+    classification: 0.20
+    tone_empathy: 0.25
+    solution_quality: 0.30
+    retention: 0.25
+    failure_penalty: -0.30

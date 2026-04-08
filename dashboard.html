@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CustomerSupportEnv</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#0e0e0e;--s1:#161616;--s2:#1e1e1e;--s3:#262626;--border:#2a2a2a;--orange:#ff6b35;--green:#00c896;--amber:#f5a623;--red:#ff4757;--blue:#4a9eff;--text:#f0f0f0;--muted:#666;--sans:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:52px;background:var(--s1);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:10px;}
+.lm{width:30px;height:30px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.ln{font-weight:700;font-size:14px;}
+.lv{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:6px;}
+.nav-links{display:flex;gap:2px;}
+.nl{padding:6px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border:1px solid transparent;text-decoration:none;transition:all 0.15s;}
+.nl:hover{color:var(--text);background:var(--s2);}
+.nl.on{color:var(--orange);background:rgba(255,107,53,0.1);border-color:rgba(255,107,53,0.25);}
+.nl.ext{color:var(--blue);}
+.live{display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.2);border-radius:100px;font-family:var(--mono);font-size:11px;color:var(--green);}
+.dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.page{display:none;padding:24px 28px;max-width:1400px;margin:0 auto;}
+.page.on{display:block;}
+.ov-hero{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:32px;background:var(--s1);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;border-left:3px solid var(--orange);}
+.ov-tag{font-family:var(--mono);font-size:10px;color:var(--orange);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.ov-title{font-size:24px;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px;}
+.ov-sub{font-size:13px;color:var(--muted);line-height:1.6;max-width:500px;}
+.ov-stats{display:flex;flex-direction:column;gap:10px;min-width:160px;}
+.ov-stat-val{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--orange);text-align:right;}
+.ov-stat-label{font-size:11px;color:var(--muted);text-align:right;}
+.unique-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.ucard{padding:18px;background:var(--s1);border:1px solid var(--border);border-radius:12px;transition:border-color 0.2s;}
+.ucard:hover{border-color:var(--orange);}
+.ucard-icon{font-size:20px;margin-bottom:10px;}
+.ucard-title{font-size:13px;font-weight:600;margin-bottom:4px;}
+.ucard-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.tasks-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.tcard{padding:18px;border-radius:12px;border:1px solid var(--border);background:var(--s1);}
+.tcard.easy{border-left:3px solid var(--green);}
+.tcard.medium{border-left:3px solid var(--amber);}
+.tcard.hard{border-left:3px solid var(--red);}
+.tdiff{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.easy .tdiff{color:var(--green);}.medium .tdiff{color:var(--amber);}.hard .tdiff{color:var(--red);}
+.tname{font-size:14px;font-weight:600;margin-bottom:4px;}
+.tdesc{font-size:12px;color:var(--muted);line-height:1.5;}
+.flow-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.fstep{padding:20px;border-right:1px solid var(--border);}
+.fstep:last-child{border-right:none;}
+.fnum{width:28px;height:28px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:white;margin-bottom:10px;}
+.fname{font-size:13px;font-weight:600;margin-bottom:4px;}
+.fdesc{font-size:12px;color:var(--muted);line-height:1.5;}
+.sec-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.scard{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.scard-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.scard-val{font-family:var(--mono);font-size:24px;font-weight:700;}
+.scard-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.demo-layout{display:grid;grid-template-columns:1fr 340px;gap:16px;}
+.demo-left{display:flex;flex-direction:column;gap:14px;}
+.demo-right{display:flex;flex-direction:column;gap:14px;}
+.panel{background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ph{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.ph-title{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+.ph-meta{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.convo{padding:14px;min-height:260px;max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+.msg{display:flex;gap:8px;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.agent{flex-direction:row-reverse;}
+.av{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.msg.customer .av{background:rgba(255,107,53,0.15);}.msg.agent .av{background:rgba(74,158,255,0.15);}
+.bubble{max-width:80%;padding:9px 12px;font-size:13px;line-height:1.5;border-radius:10px;}
+.msg.customer .bubble{background:var(--s2);border:1px solid var(--border);border-radius:10px 10px 10px 2px;}
+.msg.agent .bubble{background:rgba(74,158,255,0.08);border:1px solid rgba(74,158,255,0.2);border-radius:10px 10px 2px 10px;}
+.bmeta{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:40px;color:var(--muted);font-size:13px;text-align:center;}
+.rw-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.rrow{display:flex;flex-direction:column;gap:4px;}
+.rrow-top{display:flex;justify-content:space-between;font-size:11px;}
+.rlabel{color:var(--muted);font-family:var(--mono);}
+.rval{font-family:var(--mono);font-weight:600;}
+.rbar-bg{height:4px;background:var(--s3);border-radius:100px;overflow:hidden;}
+.rbar{height:100%;border-radius:100px;transition:width 0.7s cubic-bezier(0.4,0,0.2,1);}
+.total-box{padding:14px;background:var(--s2);border-radius:10px;text-align:center;border:1px solid var(--border);margin-top:4px;}
+.total-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.total-val{font-family:var(--mono);font-size:34px;font-weight:700;letter-spacing:-2px;transition:color 0.4s;}
+.cs-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;}
+.cs-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--s2);border-radius:7px;}
+.cs-key{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.cs-val{font-size:12px;font-weight:500;}
+.tier-pill{padding:2px 8px;border-radius:100px;font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;}
+.t-vip{background:rgba(245,166,35,0.15);color:var(--amber);border:1px solid rgba(245,166,35,0.3);}
+.t-premium{background:rgba(255,107,53,0.15);color:var(--orange);border:1px solid rgba(255,107,53,0.3);}
+.t-standard{background:rgba(102,102,102,0.15);color:var(--muted);border:1px solid rgba(102,102,102,0.3);}
+.mood-wrap{padding:0 14px 12px;}
+.mood-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.mbar-bg{height:6px;background:var(--s2);border-radius:100px;overflow:hidden;}
+.mbar{height:100%;border-radius:100px;transition:width 0.5s,background 0.5s;}
+.mbar-ends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:2px;}
+.mood-emoji{text-align:center;font-size:24px;margin:8px 0 4px;}
+.ctrl-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+select{width:100%;padding:9px 11px;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;cursor:pointer;transition:border-color 0.15s;}
+select:focus{border-color:var(--orange);}
+select option{background:var(--s1);}
+.btn{width:100%;padding:10px;border-radius:8px;border:none;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:1px;}
+.btn-main{background:var(--orange);color:white;}
+.btn-main:hover:not(:disabled){opacity:0.9;transform:translateY(-1px);}
+.btn-main:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+.btn-sec{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+.btn-sec:hover:not(:disabled){border-color:var(--orange);color:var(--text);}
+.btn-sec:disabled{opacity:0.35;cursor:not-allowed;}
+.ctrl-hint{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center;}
+.log-body{padding:10px 12px;max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;}
+.lentry{display:flex;gap:8px;font-family:var(--mono);font-size:10px;padding:5px 8px;border-radius:6px;border-left:2px solid var(--border);animation:up 0.2s ease;}
+.lentry.success{border-left-color:var(--green);background:rgba(0,200,150,0.04);}
+.lentry.warning{border-left-color:var(--amber);background:rgba(245,166,35,0.04);}
+.lentry.error{border-left-color:var(--red);background:rgba(255,71,87,0.04);}
+.lentry.info{border-left-color:var(--orange);background:rgba(255,107,53,0.04);}
+.ltime{color:var(--muted);flex-shrink:0;}
+.ss-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;}
+.ss-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--s2);border-radius:7px;font-size:12px;}
+.ss-key{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.ss-val{font-family:var(--mono);font-weight:600;}
+.api-layout{display:grid;grid-template-columns:220px 1fr;gap:16px;}
+.api-sidebar{display:flex;flex-direction:column;gap:4px;}
+.api-sidebar-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:8px 12px;}
+.ep-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid transparent;transition:all 0.15s;}
+.ep-item:hover{background:var(--s2);color:var(--text);}
+.ep-item.on{background:rgba(255,107,53,0.08);border-color:rgba(255,107,53,0.2);color:var(--orange);}
+.method{padding:2px 6px;border-radius:4px;font-size:9px;font-weight:700;}
+.GET{background:rgba(74,158,255,0.15);color:var(--blue);}.POST{background:rgba(0,200,150,0.15);color:var(--green);}
+.api-docs-link{padding:10px 12px;border-top:1px solid var(--border);margin-top:8px;}
+.api-docs-link a{font-family:var(--mono);font-size:11px;color:var(--blue);text-decoration:none;}
+.api-detail{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:24px;}
+.ep-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.ep-path{font-family:var(--mono);font-size:20px;font-weight:700;}
+.ep-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.ep-section{margin-bottom:16px;}
+.ep-section-label{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.code{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:var(--mono);font-size:11px;line-height:1.7;overflow-x:auto;white-space:pre;}
+.k{color:#79b8ff;}.s{color:#9ecbff;}.n{color:#f8c555;}.kw{color:#ff6b35;}.cm{color:#444;}
+.try-btn{padding:8px 18px;background:var(--orange);color:white;border:none;border-radius:7px;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;transition:opacity 0.15s;}
+.try-btn:hover{opacity:0.85;}
+.try-resp{margin-top:12px;background:var(--bg);border:1px solid var(--green);border-radius:8px;padding:12px;font-family:var(--mono);font-size:11px;line-height:1.7;display:none;white-space:pre-wrap;color:var(--green);}
+::-webkit-scrollbar{width:3px;height:3px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">
+    <div class="lm">🎯</div>
+    <span class="ln">CustomerSupportEnv</span>
+    <span class="lv">v2.0</span>
+  </div>
+  <div class="nav-links">
+    <a class="nl on" onclick="go('overview',this)">Overview</a>
+    <a class="nl" onclick="go('demo',this)">Live Demo</a>
+    <a class="nl" onclick="go('api',this)">API Reference</a>
+    <a class="nl ext" href="/docs" target="_blank">Swagger ↗</a>
+  </div>
+  <div class="live"><div class="dot"></div>ENV LIVE</div>
+</nav>
+
+<!-- OVERVIEW -->
+<div class="page on" id="page-overview">
+  <div class="ov-hero">
+    <div>
+      <div class="ov-tag">OpenEnv RL Environment · Meta x HuggingFace Hackathon</div>
+      <div class="ov-title">Customer Support Training Environment</div>
+      <div class="ov-sub">Train AI agents to handle real customer support with dynamic mood tracking, failure states, and tier-weighted rewards. No other OpenEnv environment models evolving customer emotion.</div>
+    </div>
+    <div class="ov-stats">
+      <div class="ov-stat"><div class="ov-stat-val">3</div><div class="ov-stat-label">difficulty tasks</div></div>
+      <div class="ov-stat"><div class="ov-stat-val">5</div><div class="ov-stat-label">reward dimensions</div></div>
+      <div class="ov-stat"><div class="ov-stat-val">0-1</div><div class="ov-stat-label">continuous reward</div></div>
+    </div>
+  </div>
+  <div class="unique-row">
+    <div class="ucard"><div class="ucard-icon">🎭</div><div class="ucard-title">Dynamic Customer Mood</div><div class="ucard-desc">Emotion evolves each turn. Bad response means angrier customer and harder next turn.</div></div>
+    <div class="ucard"><div class="ucard-icon">💥</div><div class="ucard-title">Failure States</div><div class="ucard-desc">Patience runs out means customer leaves and -0.30 penalty. Real consequences.</div></div>
+    <div class="ucard"><div class="ucard-icon">⭐</div><div class="ucard-title">VIP Tier Weighting</div><div class="ucard-desc">Losing a VIP penalises more. Reward multiplied by tier: 1.0x to 2.0x.</div></div>
+    <div class="ucard"><div class="ucard-icon">🎯</div><div class="ucard-title">Structured Actions</div><div class="ucard-desc">Agent declares action_type and tone, not just free text. Makes grading accurate.</div></div>
+  </div>
+  <div class="sec-label">3 Tasks</div>
+  <div class="tasks-row">
+    <div class="tcard easy"><div class="tdiff">Easy</div><div class="tname">Refund Status Inquiry</div><div class="tdesc">Priya Sharma (Standard, frustrated) wants refund status after 10 days. Inform, empathize, give timeline.</div></div>
+    <div class="tcard medium"><div class="tdiff">Medium</div><div class="tname">Damaged Product Complaint</div><div class="tdesc">Rahul Mehta (Premium, angry) received broken goods before important meeting. Apologize, solve, retain.</div></div>
+    <div class="tcard hard"><div class="tdiff">Hard</div><div class="tname">VIP Escalation and Retention</div><div class="tdesc">Arjun Kapoor (VIP, furious) has had 3 failures and is leaving. Deescalate, compensate, escalate.</div></div>
+  </div>
+  <div class="sec-label">How training works</div>
+  <div class="flow-row">
+    <div class="fstep"><div class="fnum">1</div><div class="fname">Reset</div><div class="fdesc">Agent calls /reset. Gets customer message, tier, initial mood.</div></div>
+    <div class="fstep"><div class="fnum">2</div><div class="fname">Observe</div><div class="fdesc">Reads emotion, patience, history from observation object.</div></div>
+    <div class="fstep"><div class="fnum">3</div><div class="fname">Act</div><div class="fdesc">Calls /step with action_type, tone, message, solution.</div></div>
+    <div class="fstep"><div class="fnum">4</div><div class="fname">Learn</div><div class="fdesc">Gets reward 0.0 to 1.0 plus updated customer state. Repeat.</div></div>
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="page" id="page-demo">
+  <div class="stats-bar">
+    <div class="scard"><div class="scard-label">Episodes Run</div><div class="scard-val" id="s-ep">0</div><div class="scard-sub">training episodes</div></div>
+    <div class="scard"><div class="scard-label">Avg Reward</div><div class="scard-val" id="s-avg">--</div><div class="scard-sub">across all steps</div></div>
+    <div class="scard"><div class="scard-label">Retained</div><div class="scard-val" id="s-ret">--</div><div class="scard-sub">successful resolutions</div></div>
+    <div class="scard"><div class="scard-label">Current Task</div><div class="scard-val" style="font-size:15px;margin-top:2px;" id="s-task">--</div><div class="scard-sub" id="s-diff">select task to begin</div></div>
+  </div>
+  <div class="demo-layout">
+    <div class="demo-left">
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Live Conversation</span><span class="ph-meta" id="turn-ind">Turn -- / 3</span></div>
+        <div class="convo" id="convo"><div class="empty-state"><span style="font-size:28px">🎯</span>Select a task and click Reset to begin</div></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Reward Breakdown</span><span class="ph-meta" id="last-r" style="color:var(--orange);">--</span></div>
+        <div class="rw-body">
+          <div class="rrow"><div class="rrow-top"><span class="rlabel">Classification (20%)</span><span class="rval" id="rv-c">0.000</span></div><div class="rbar-bg"><div class="rbar" id="rb-c" style="width:0%;background:var(--blue);"></div></div></div>
+          <div class="rrow"><div class="rrow-top"><span class="rlabel">Tone and Empathy (25%)</span><span class="rval" id="rv-t">0.000</span></div><div class="rbar-bg"><div class="rbar" id="rb-t" style="width:0%;background:var(--orange);"></div></div></div>
+          <div class="rrow"><div class="rrow-top"><span class="rlabel">Solution Quality (30%)</span><span class="rval" id="rv-s">0.000</span></div><div class="rbar-bg"><div class="rbar" id="rb-s" style="width:0%;background:var(--green);"></div></div></div>
+          <div class="rrow"><div class="rrow-top"><span class="rlabel">Customer Retention (25%)</span><span class="rval" id="rv-r">0.000</span></div><div class="rbar-bg"><div class="rbar" id="rb-r" style="width:0%;background:var(--amber);"></div></div></div>
+          <div class="rrow"><div class="rrow-top"><span class="rlabel">Escalation Bonus (10%)</span><span class="rval" id="rv-e">0.000</span></div><div class="rbar-bg"><div class="rbar" id="rb-e" style="width:0%;background:#a29bfe;"></div></div></div>
+          <div class="total-box"><div class="total-label">Step Reward</div><div class="total-val" id="total-r">--</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-right">
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Customer State</span></div>
+        <div class="cs-body">
+          <div class="cs-row"><span class="cs-key">Name</span><span class="cs-val" id="c-name">--</span></div>
+          <div class="cs-row"><span class="cs-key">Tier</span><span id="c-tier">--</span></div>
+          <div class="cs-row"><span class="cs-key">Emotion</span><span class="cs-val" id="c-emotion">--</span></div>
+          <div class="cs-row"><span class="cs-key">Issue</span><span class="cs-val" id="c-issue" style="font-size:11px;">--</span></div>
+        </div>
+        <div class="mood-wrap">
+          <div class="mood-lbl">Mood</div>
+          <div class="mbar-bg"><div class="mbar" id="mood-b" style="width:50%;background:var(--amber);"></div></div>
+          <div class="mbar-ends"><span>Furious</span><span>Happy</span></div>
+          <div class="mood-emoji" id="mood-e">😐</div>
+        </div>
+        <div class="mood-wrap">
+          <div class="mood-lbl">Patience</div>
+          <div class="mbar-bg"><div class="mbar" id="pat-b" style="width:80%;background:var(--green);"></div></div>
+          <div class="mbar-ends"><span>Leaving</span><span>Patient</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Controls</span></div>
+        <div class="ctrl-body">
+          <select id="task-sel">
+            <option value="">-- Select Task --</option>
+            <option value="refund_status_inquiry">Task 1 (Easy) -- Refund Inquiry</option>
+            <option value="damaged_product_complaint">Task 2 (Medium) -- Damaged Product</option>
+            <option value="vip_escalation_retention">Task 3 (Hard) -- VIP Escalation</option>
+          </select>
+          <button class="btn btn-main" id="btn-reset">Reset Episode</button>
+          <button class="btn btn-sec" id="btn-step" disabled>Run Agent Step</button>
+          <div class="ctrl-hint" id="ctrl-hint">Select a task to begin</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Episode Log</span><span onclick="document.getElementById('log').innerHTML=''" style="font-family:var(--mono);font-size:9px;color:var(--muted);cursor:pointer;">CLEAR</span></div>
+        <div class="log-body" id="log"></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="ph-title">Session Stats</span></div>
+        <div class="ss-body">
+          <div class="ss-row"><span class="ss-key">Best Reward</span><span class="ss-val" id="ss-best" style="color:var(--green);">--</span></div>
+          <div class="ss-row"><span class="ss-key">Worst Reward</span><span class="ss-val" id="ss-worst" style="color:var(--red);">--</span></div>
+          <div class="ss-row"><span class="ss-key">Customers Left</span><span class="ss-val" id="ss-left" style="color:var(--amber);">0</span></div>
+          <div class="ss-row"><span class="ss-key">Resolve Rate</span><span class="ss-val" id="ss-res">--</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- API -->
+<div class="page" id="page-api">
+  <div class="api-layout">
+    <div class="api-sidebar">
+      <div class="api-sidebar-label">Endpoints</div>
+      <div class="ep-item on" onclick="showEp('health',this)"><span class="method GET">GET</span>/health</div>
+      <div class="ep-item" onclick="showEp('reset',this)"><span class="method POST">POST</span>/reset</div>
+      <div class="ep-item" onclick="showEp('step',this)"><span class="method POST">POST</span>/step</div>
+      <div class="ep-item" onclick="showEp('state',this)"><span class="method GET">GET</span>/state</div>
+      <div class="ep-item" onclick="showEp('tasks',this)"><span class="method GET">GET</span>/tasks</div>
+      <div class="api-docs-link"><a href="/docs" target="_blank">Open full Swagger UI</a></div>
+    </div>
+    <div class="api-detail" id="api-detail"></div>
+  </div>
+</div>
+
+<script>
+function go(name,el){document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.nl').forEach(l=>l.classList.remove('on'));document.getElementById('page-'+name).classList.add('on');el.classList.add('on');}
+const EPS={
+  health:{method:'GET',path:'/health',desc:'Health check. Validation script pings this to confirm environment is live.',req:null,res:'{\n  "status": "ok",\n  "environment": "CustomerSupportEnv",\n  "version": "2.0.0"\n}',tryable:true},
+  reset:{method:'POST',path:'/reset',desc:'Start a new training episode. Returns first customer message, tier, and emotional state.',req:'{\n  "task_name": "vip_escalation_retention"\n}',res:'{\n  "observation": {\n    "customer_message": "I am DONE with your company...",\n    "customer_state": {\n      "emotion": "furious",\n      "patience": 0.1,\n      "value_tier": "vip"\n    },\n    "conversation_turn": 1\n  }\n}',tryable:false},
+  step:{method:'POST',path:'/step',desc:'Submit agent action. Returns reward 0.0-1.0, updated customer state, and full reward breakdown.',req:'{\n  "action": {\n    "action_type": "deescalate",\n    "tone": "empathetic",\n    "classification": "escalation_needed",\n    "department_route": "retention",\n    "urgency_level": "critical",\n    "message": "I sincerely apologize...",\n    "proposed_solution": "Senior manager call in 15 min",\n    "escalate_to_human": true,\n    "retention_offer": "3 months free"\n  }\n}',res:'{\n  "reward": 0.766,\n  "done": false,\n  "info": {\n    "reward_breakdown": {\n      "classification": 0.200,\n      "tone_empathy": 0.158,\n      "solution_quality": 0.245,\n      "retention": 0.163,\n      "escalation_bonus": 0.100,\n      "total": 0.766\n    },\n    "customer_emotion": "angry",\n    "customer_retained": true\n  }\n}',tryable:false},
+  state:{method:'GET',path:'/state',desc:'Returns current internal environment state including turn count and customer state.',req:null,res:'{\n  "task_name": "vip_escalation_retention",\n  "current_turn": 1,\n  "total_reward": 0.766,\n  "episode_done": false,\n  "failure_reason": null\n}',tryable:true},
+  tasks:{method:'GET',path:'/tasks',desc:'List all available tasks with difficulty levels.',req:null,res:'{\n  "tasks": [\n    {"name": "refund_status_inquiry", "difficulty": "easy"},\n    {"name": "damaged_product_complaint", "difficulty": "medium"},\n    {"name": "vip_escalation_retention", "difficulty": "hard"}\n  ]\n}',tryable:true}
+};
+function showEp(name,el){
+  document.querySelectorAll('.ep-item').forEach(i=>i.classList.remove('on'));el.classList.add('on');
+  const ep=EPS[name];
+  document.getElementById('api-detail').innerHTML=`<div class="ep-header"><span class="method ${ep.method}" style="font-size:11px;padding:3px 8px;">${ep.method}</span><span class="ep-path">${ep.path}</span></div><div class="ep-desc">${ep.desc}</div>${ep.req?`<div class="ep-section"><div class="ep-section-label">Request Body</div><div class="code">${ep.req}</div></div>`:''}<div class="ep-section"><div class="ep-section-label">Response</div><div class="code">${ep.res}</div></div>${ep.tryable?`<button class="try-btn" onclick="tryEp('${name}')">Try it</button><div class="try-resp" id="tr-${name}"></div>`:''}`;
+}
+showEp('health',document.querySelector('.ep-item'));
+async function tryEp(name){const b=document.getElementById('tr-'+name);b.style.display='block';b.textContent='Loading...';try{const r=await fetch('/'+name);b.textContent=JSON.stringify(await r.json(),null,2);}catch(e){b.textContent='Error: '+e.message;b.style.borderColor='var(--red)';b.style.color='var(--red)';}}
+let S={episodes:0,rewards:[],left:0,resolved:0},obs=null,done=false,t0=Date.now();
+const EM={furious:'😡',angry:'😠',frustrated:'😤',neutral:'😐',satisfied:'😊',happy:'😄'};
+const MP={furious:4,angry:18,frustrated:35,neutral:54,satisfied:74,happy:95};
+const MC={furious:'var(--red)',angry:'#ff6b35',frustrated:'var(--amber)',neutral:'#a29bfe',satisfied:'var(--green)',happy:'#00e5a0'};
+const RESP={
+  refund_status_inquiry:[
+    {action_type:"inform",tone:"empathetic",classification:"refund_request",department_route:"billing",urgency_level:"medium",message:"I completely understand your concern, Priya. I sincerely apologize for the delay. Your refund of Rs.2340 for order #45821 has been processed and will reflect in your account within 2-3 business days.",proposed_solution:"Refund of Rs.2340 credited within 3 business days.",escalate_to_human:false,retention_offer:"10% discount on next order"},
+    {action_type:"inform",tone:"reassuring",classification:"refund_request",department_route:"billing",urgency_level:"medium",message:"The refund will go directly to your original payment method. You will receive an SMS confirmation too.",proposed_solution:"Refund to original payment method confirmed.",escalate_to_human:false,retention_offer:null},
+    {action_type:"inform",tone:"empathetic",classification:"refund_request",department_route:"billing",urgency_level:"low",message:"You are most welcome, Priya! We truly value your patience. Is there anything else I can help with today?",proposed_solution:"Issue fully resolved.",escalate_to_human:false,retention_offer:null}
+  ],
+  damaged_product_complaint:[
+    {action_type:"apologize",tone:"empathetic",classification:"damaged_product",department_route:"logistics",urgency_level:"high",message:"Rahul, I am so sorry. Receiving a damaged product before an important presentation is absolutely unacceptable. I take full responsibility and am escalating this to priority fulfillment right now.",proposed_solution:"Express replacement dispatched within 4 hours at zero cost.",escalate_to_human:false,retention_offer:"Full refund plus 20% credit"},
+    {action_type:"offer",tone:"empathetic",classification:"damaged_product",department_route:"logistics",urgency_level:"high",message:"I hear you, Rahul. I have applied Rs.500 store credit to your account immediately and our logistics team is processing your replacement.",proposed_solution:"Rs.500 credit applied. Same-day replacement in progress.",escalate_to_human:false,retention_offer:"Rs.500 credit plus 15% on next purchase"},
+    {action_type:"offer",tone:"reassuring",classification:"damaged_product",department_route:"logistics",urgency_level:"medium",message:"Absolutely, Rahul. A 20% discount has been applied to your account. We have flagged this internally to prevent it happening again.",proposed_solution:"20% discount applied permanently.",escalate_to_human:false,retention_offer:"20% discount applied"}
+  ],
+  vip_escalation_retention:[
+    {action_type:"deescalate",tone:"empathetic",classification:"escalation_needed",department_route:"retention",urgency_level:"critical",message:"Arjun, I hear every word and I am deeply sorry. Three failures is three too many. I am escalating you to our Senior Retention Director right now who will call within 15 minutes.",proposed_solution:"Senior Retention Director call within 15 minutes plus full account audit.",escalate_to_human:true,retention_offer:"3 months premium free plus dedicated account manager"},
+    {action_type:"escalate",tone:"empathetic",classification:"escalation_needed",department_route:"retention",urgency_level:"critical",message:"Arjun, our director has been fully briefed on all three incidents and will present a concrete action plan. You have my personal commitment this will not happen again.",proposed_solution:"Written commitment plus Rs.5000 credit plus process fix documented.",escalate_to_human:true,retention_offer:"Rs.5000 credit plus 6 months priority support"},
+    {action_type:"offer",tone:"empathetic",classification:"escalation_needed",department_route:"retention",urgency_level:"critical",message:"Arjun, our director is ready for your call. Your feedback will directly fix our internal process. You are our most valued customer.",proposed_solution:"Director call plus 12 months dedicated manager plus Rs.5000 credit.",escalate_to_human:true,retention_offer:"12 months dedicated support plus Rs.5000 credit"}
+  ]
+};
+function ts(){const s=Math.floor((Date.now()-t0)/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function addLog(msg,type){const l=document.getElementById('log');const e=document.createElement('div');e.className='lentry '+(type||'info');e.innerHTML='<span class="ltime">'+ts()+'</span><span>'+msg+'</span>';l.appendChild(e);l.scrollTop=l.scrollHeight;}
+function setHint(t){document.getElementById('ctrl-hint').textContent=t;}
+function updateState(o){
+  const cs=o.customer_state;
+  document.getElementById('c-name').textContent=o.customer_name;
+  const tc={vip:'t-vip',premium:'t-premium',standard:'t-standard'}[cs.value_tier]||'t-standard';
+  const tl={vip:'VIP',premium:'Premium',standard:'Standard'}[cs.value_tier]||'Standard';
+  document.getElementById('c-tier').innerHTML='<span class="tier-pill '+tc+'">'+tl+'</span>';
+  document.getElementById('c-emotion').textContent=cs.emotion.toUpperCase();
+  document.getElementById('c-emotion').style.color=MC[cs.emotion]||'var(--text)';
+  document.getElementById('c-issue').textContent=o.issue_category.replace(/_/g,' ');
+  document.getElementById('mood-e').textContent=EM[cs.emotion]||'😐';
+  document.getElementById('mood-b').style.width=(MP[cs.emotion]||50)+'%';
+  document.getElementById('mood-b').style.background=MC[cs.emotion]||'var(--amber)';
+  const pp=Math.round(cs.patience*100);
+  document.getElementById('pat-b').style.width=pp+'%';
+  document.getElementById('pat-b').style.background=pp<30?'var(--red)':pp<60?'var(--amber)':'var(--green)';
+}
+function updateReward(bd,r){
+  const f=[['rv-c','rb-c',bd.classification,0.20],['rv-t','rb-t',bd.tone_empathy,0.25],['rv-s','rb-s',bd.solution_quality,0.30],['rv-r','rb-r',bd.retention,0.25],['rv-e','rb-e',bd.escalation_bonus||0,0.10]];
+  f.forEach(function(x){document.getElementById(x[0]).textContent=(x[2]||0).toFixed(3);document.getElementById(x[1]).style.width=Math.max(0,Math.min(100,((x[2]||0)/x[3])*100))+'%';});
+  const tv=document.getElementById('total-r');
+  tv.textContent=r.toFixed(3);
+  tv.style.color=r>=0.7?'var(--green)':r>=0.4?'var(--amber)':'var(--red)';
+  document.getElementById('last-r').textContent='Last: '+r.toFixed(3);
+}
+function addMsg(role,text,meta){
+  const c=document.getElementById('convo');
+  const empty=c.querySelector('.empty-state');if(empty)empty.remove();
+  const d=document.createElement('div');d.className='msg '+role;
+  d.innerHTML='<div class="av">'+(role==='customer'?'👤':'🤖')+'</div><div><div class="bubble">'+text+'</div>'+(meta?'<div class="bmeta">'+meta+'</div>':'')+'</div>';
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+document.getElementById('btn-reset').addEventListener('click',async function(){
+  const task=document.getElementById('task-sel').value;
+  if(!task){addLog('Please select a task first','warning');return;}
+  document.getElementById('btn-reset').disabled=true;document.getElementById('btn-step').disabled=true;
+  document.getElementById('convo').innerHTML='<div class="empty-state">Starting episode...</div>';
+  try{
+    const r=await fetch('/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task_name:task})});
+    const data=await r.json();obs=data.observation;done=false;
+    document.getElementById('convo').innerHTML='';
+    addMsg('customer',obs.customer_message,obs.customer_name+' · '+obs.customer_state.value_tier+' · Turn 1');
+    updateState(obs);
+    ['rv-c','rv-t','rv-s','rv-r','rv-e'].forEach(function(id){document.getElementById(id).textContent='0.000';});
+    ['rb-c','rb-t','rb-s','rb-r','rb-e'].forEach(function(id){document.getElementById(id).style.width='0%';});
+    document.getElementById('total-r').textContent='--';document.getElementById('total-r').style.color='var(--text)';
+    document.getElementById('last-r').textContent='--';document.getElementById('turn-ind').textContent='Turn 1 / 3';
+    const dm={refund_status_inquiry:'Easy',damaged_product_complaint:'Medium',vip_escalation_retention:'Hard'};
+    const nm={refund_status_inquiry:'Refund Inquiry',damaged_product_complaint:'Damaged Product',vip_escalation_retention:'VIP Escalation'};
+    document.getElementById('s-task').textContent=nm[task]||task;document.getElementById('s-diff').textContent=(dm[task]||'')+' difficulty';
+    S.episodes++;document.getElementById('s-ep').textContent=S.episodes;
+    addLog('Episode '+S.episodes+': '+task,'info');
+    addLog('Customer: '+obs.customer_name+' | '+obs.customer_state.value_tier+' | '+obs.customer_state.emotion,'info');
+    document.getElementById('btn-step').disabled=false;setHint('Click Run Agent Step to continue');
+  }catch(e){addLog('Connection error: '+e.message,'error');document.getElementById('convo').innerHTML='<div class="empty-state">Server not reachable. Run uvicorn app:app first.</div>';}
+  document.getElementById('btn-reset').disabled=false;
+});
+document.getElementById('btn-step').addEventListener('click',async function(){
+  if(!obs||done)return;
+  const task=document.getElementById('task-sel').value;
+  const turn=obs.conversation_turn;
+  const responses=RESP[task]||RESP.refund_status_inquiry;
+  const action=responses[Math.min(turn-1,responses.length-1)];
+  document.getElementById('btn-step').disabled=true;document.getElementById('btn-reset').disabled=true;
+  try{
+    const r=await fetch('/step',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:action})});
+    const data=await r.json();
+    addMsg('agent',action.message,'['+action.action_type+'/'+action.tone+'] · '+action.urgency_level);
+    updateReward(data.info.reward_breakdown,data.reward);
+    obs=data.observation;updateState(obs);
+    document.getElementById('turn-ind').textContent='Turn '+turn+' / 3';
+    const rt=data.reward>=0.7?'success':data.reward>=0.4?'warning':'error';
+    addLog('Turn '+turn+' reward: '+data.reward.toFixed(3)+' | '+obs.customer_state.emotion+' | patience '+obs.customer_state.patience.toFixed(2),rt);
+    S.rewards.push(data.reward);
+    const avg=S.rewards.reduce(function(a,b){return a+b;},0)/S.rewards.length;
+    document.getElementById('s-avg').textContent=avg.toFixed(2);
+    document.getElementById('ss-best').textContent=Math.max.apply(null,S.rewards).toFixed(3);
+    document.getElementById('ss-worst').textContent=Math.min.apply(null,S.rewards).toFixed(3);
+    if(data.done){
+      done=true;
+      if(obs.customer_state.will_leave){S.left++;document.getElementById('ss-left').textContent=S.left;addLog('Episode ended -- customer left','error');addMsg('customer',"I have had enough. Goodbye.",'Episode ended');}
+      else if(obs.customer_state.issue_resolved){S.resolved++;addLog('Episode ended -- resolved','success');addMsg('customer',obs.customer_message,'Episode complete');}
+      else{addLog('Episode ended -- max turns','warning');addMsg('customer',obs.customer_message,'Episode complete');}
+      document.getElementById('s-ret').textContent=S.resolved+'/'+S.episodes;
+      document.getElementById('ss-res').textContent=S.episodes>0?Math.round(S.resolved/S.episodes*100)+'%':'--';
+      setHint('Episode complete -- click Reset to start again');
+    }else{
+      addMsg('customer',obs.customer_message,obs.customer_name+' · Turn '+obs.conversation_turn);
+      document.getElementById('btn-step').disabled=false;
+      setHint('Turn '+obs.conversation_turn+' of 3 -- click Run Agent Step');
+    }
+  }catch(e){addLog('Step error: '+e.message,'error');document.getElementById('btn-step').disabled=false;}
+  document.getElementById('btn-reset').disabled=false;
+});
+</script>
+</body>
+</html>
